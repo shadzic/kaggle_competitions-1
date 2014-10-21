@@ -6,7 +6,6 @@ Created on Mon Oct 20 21:18:08 2014
 """
 
 import os
-import platform 
 import pandas as pd
 import pylab as pl
 
