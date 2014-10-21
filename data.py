@@ -6,13 +6,17 @@ Created on Mon Oct 20 21:18:08 2014
 """
 
 import os
-import plateform 
+import platform 
 import pandas as pd
+import pylab as pl
 
 
-class Data: 
+DELIMITER = ','
+
+
+class CsvData: 
     """
-    Class representing our data.
+    Class representing csv data.
     """
     
     def __init__(self, path = None):
@@ -28,8 +32,9 @@ class Data:
     
     def _default_path(self):
         """
-        Constructs the path of the csv file storing our data. By default, the train.csv file is stored 
-        in the same folder as the data.py file.
+        Constructs the path of the csv file storing our data. 
+        By default, the train.csv file is stored in the same 
+        folder as the data.py file.
         """
         if platform.system() == 'Linux':
             if os.path.exists(os.getcwd() +'/train.csv'):
@@ -49,16 +54,30 @@ class Data:
         """
         Read our .csv file storing our data and set X and y
         """
-        self.dataframe = pd.read_csv(self.path, delimiter=',').dropna()
+        self.dataframe = pd.read_csv(self.path, delimiter = DELIMITER).dropna()
         n, p = self.dataframe.shape
         return self.dataframe.iloc[:,1:p], self.dataframe['label'] 
         
 
 
-#class Digits(Data):
-#    pass        
-        
-        
+class Digits(CsvData):
+    """
+    Class representing our digits data. 
+    """    
+    
+    def __init__(self, path = None): 
+        CsvData.__init__(self, path)
+    
+    
+    def plot_some_digits(self, some = 9):
+        """
+        Plots n random digits among the data. 
+        """
+        nine_first_digit = self.X.iloc[0:some,:]
+        for i in range(nine_first_digit.shape[0]):  
+            pl.subplot(3, 3, i + 1)
+            digit = nine_first_digit.iloc[i,:].values.reshape((28,28))
+            pl.imshow(digit, cmap=pl.cm.summer, interpolation='none') 
         
         
         
