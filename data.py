@@ -23,7 +23,7 @@ class CsvData:
         if path is None:
             try:
                 self.path = self._default_path()
-            except (OSError, IOError):
+            except IOError:
                 pass
         else:
             self.path = path
