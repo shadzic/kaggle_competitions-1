@@ -32,22 +32,15 @@ class CsvData:
     
     def _default_path(self):
         """
-        Constructs the path of the csv file storing our data. 
+        Returns the path of the csv file storing our data. 
         By default, the train.csv file is stored in the same 
         folder as the data.py file.
         """
-        if platform.system() == 'Linux':
-            if os.path.exists(os.getcwd() +'/train.csv'):
-                return os.getcwd()+'/train.csv'
-            else:
-                raise IOError("file not found")
-        elif platform.system() == 'Windows':
-            if os.path.exists(os.getcwd() +'/train.csv'):
-                return os.getcwd() +'\\train.csv'
-            else:
-                raise IOError("file not found")
-        else: 
-            raise OSError("your OS is not supported")
+        if os.path.exists(os.path.join(os.getcwd(), 'train.csv')):
+            return os.path.join(os.getcwd(), 'train.csv')
+        else:
+            raise IOError("file not found")
+
     
     
     def _read_csv(self):
