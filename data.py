@@ -27,6 +27,10 @@ class Data:
     
     
     def _default_path(self):
+        """
+        Constructs the path of the csv file storing our data. By default, the train.csv file is stored 
+        in the same folder as the data.py file.
+        """
         if platform.system() == 'Linux':
             if os.path.exists(os.getcwd() +'/train.csv'):
                 return os.getcwd()+'/train.csv'
@@ -42,9 +46,12 @@ class Data:
     
     
     def _read_csv(self):
-        self.dataframe = pd.read_csv(self.path, delimiter=',')
-        n, p = self.dataframe.shape[0], self.dataframe.shape[1]
-        return (self.dataframe.iloc[:,1:p], self.dataframe['label']) 
+        """
+        Read our .csv file storing our data and set X and y
+        """
+        self.dataframe = pd.read_csv(self.path, delimiter=',').dropna()
+        n, p = self.dataframe.shape
+        return self.dataframe.iloc[:,1:p], self.dataframe['label'] 
         
 
 
