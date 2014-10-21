@@ -87,10 +87,12 @@ class Digits(CsvData):
          if self.X_train is not None:
              if strategy == 'RFE':
                  print 'on va changer self.X_train et self.X_test en réduisant la dimension p'
+             elif strategy == 'PCA':
+                 print 'PCA'
              else: 
                  raise 'Strategy for dimension reduction not recognized'
-        else: 
-            raise 'test_train_split must have been called'
+         else: 
+             raise 'test_train_split must have been called'
         
         
         

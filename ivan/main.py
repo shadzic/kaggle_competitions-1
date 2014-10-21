@@ -27,3 +27,7 @@ from sklearn.ensemble import RandomForestClassifier
 rf = RandomForestClassifier()
 rf_score= Tester(rf, d).score()
 
+
+from sklearn import svm
+svc = svm.SVC(gamma = 0.001, C = 100.)
+svc_score= Tester(svc, d).score()
