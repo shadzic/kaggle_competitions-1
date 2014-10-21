@@ -9,9 +9,9 @@ Created on Mon Jul 07 19:46:37 2014
 
 from data import Digits
 from rfesvc import features_to_select
-import pandas as pd
-import numpy as np
-import pylab as pl
+#import pandas as pd
+#import numpy as np
+#import pylab as pl
 
 
 d = Digits()

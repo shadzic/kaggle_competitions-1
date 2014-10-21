@@ -8,6 +8,7 @@ Created on Mon Oct 20 21:18:08 2014
 import os
 import pandas as pd
 import pylab as pl
+from sklearn.cross_validation import train_test_split
 
 
 DELIMITER = ','
@@ -41,7 +42,6 @@ class CsvData:
             raise IOError("file not found")
 
     
-    
     def _read_csv(self):
         """
         Read our .csv file storing our data and set X and y
@@ -49,6 +49,14 @@ class CsvData:
         self.dataframe = pd.read_csv(self.path, delimiter = DELIMITER).dropna()
         n, p = self.dataframe.shape
         return self.dataframe.iloc[:,1:p], self.dataframe['label'] 
+        
+        
+    def train_test_split(self, test_size):
+        """
+        Splitting data between training set and test set as numpy arrays.
+        """
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X.values, self.y.values, test_size = test_size, random_state = 42)
+
         
 
 
@@ -70,9 +78,19 @@ class Digits(CsvData):
             pl.subplot(3, 3, i + 1)
             digit = nine_first_digit.iloc[i,:].values.reshape((28,28))
             pl.imshow(digit, cmap=pl.cm.summer, interpolation='none') 
-        
-        
-        
+    
+    
+    def dimension_reduction(self, strategy):
+         """
+         Dimension reduction by selecting some 
+         """
+         if self.X_train is not None:
+             if strategy == 'RFE':
+                 print 'on va changer self.X_train et self.X_test en réduisant la dimension p'
+             else: 
+                 raise 'Strategy for dimension reduction not recognized'
+        else: 
+            raise 'test_train_split must have been called'
         
         
         
