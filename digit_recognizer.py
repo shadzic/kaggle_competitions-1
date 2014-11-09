@@ -5,8 +5,8 @@ Created on Mon Jul 07 19:46:37 2014
 @authors:   ivan lepoutre
             selma hadzic
 """
-
-import pandas as pd
+import pdb              # debug tool
+import pandas as pd     # for read_csv function
 import numpy as np
 #import plyplot as plyplot
 import os
@@ -16,8 +16,11 @@ import platform
 if platform.system() == 'Windows':
     if os.path.exists(os.getcwd() +'\\train.csv'):
         path = os.getcwd() +'\\train.csv'
-        
-path = 'E:\\perso\\github\\kaggle_competitions-1\\digit_recognizer\\train.csv'
+
+if platform.system() == 'Linux':
+    path = os.getcwd() +'/train.csv'
+else:
+    path = 'E:\\perso\\github\\kaggle_competitions-1\\digit_recognizer\\train.csv'
 
 data = pd.read_csv(path,delimiter=',')
 n = data.shape[0]
@@ -130,7 +133,7 @@ yhat_neigh = neigh.predict(X_test)
 # Error rate
    # confusion_matrix(y_test, yhat_neigh, labels=None)
 E_neigh = accuracy_score(y_test, yhat_neigh, normalize=True)
-print E_neigh
+print( E_neigh )
 # On obtient E_neigh ~ 0.95
 
 # II/3 prediction using Linear Discriminant Analysis (LDA)
@@ -138,7 +141,7 @@ LDA = LDA()
 LDA.fit(X_train, y_train)
 yhat_LDA = LDA.predict(X_test)
 E_LDA = accuracy_score(y_test, yhat_LDA, normalize=True)
-print E_LDA
+print( E_LDA )
 # KNN better than LDA (E_LDA ~ 0.86)
 
 # II/3 prediction using Quadratic Discriminant Analysis (QDA)
@@ -146,7 +149,7 @@ QDA = QDA()
 QDA.fit(X_train, y_train)
 yhat_QDA = QDA.predict(X_test)
 E_QDA = accuracy_score(y_test, yhat_QDA, normalize=True)
-print E_QDA
+print( E_QDA )
 # voir pb colinéarité des variables
 
 # II/4 prediction using Random Forests (RF)
@@ -154,7 +157,7 @@ RF = RandomForestClassifier()
 RF.fit(X_train, y_train)
 yhat_RF = RF.predict(X_test)
 E_RF = accuracy_score(y_test, yhat_RF, normalize=True)
-print E_RF
+print( E_RF )
 # On obtient E_RF ~ 0.91
 # Analysons plus finement le paramétrage des RF pour améliorer ce résultat
 ''' N.B. : pour analyser vraiment finement les résultats, avoir des résultats 
@@ -164,7 +167,7 @@ RF2 = RandomForestClassifier(n_estimators = 1000)
 RF2.fit(X_train, y_train)
 yhat_RF2 = RF2.predict(X_test)
 E_RF2 = accuracy_score(y_test, yhat_RF2, normalize=True)
-print E_RF2
+print( E_RF2 )
 ''' Analyse n°1 : augmenter le nombre d'arbres donne de meilleurs résultats 
 mais cette relation est non linéaire :
 n_estimators = 10 --> Error = 0.908
@@ -177,7 +180,7 @@ RF3 = RandomForestClassifier(min_samples_leaf = 3)
 RF3.fit(X_train, y_train)
 yhat_RF3 = RF3.predict(X_test)
 E_RF3 = accuracy_score(y_test, yhat_RF3, normalize=True)
-print E_RF3
+print( E_RF3 )
 ''' Analyse n°2 : augmenter fortement le nombre minimum d'observations dans 
 les feuilles diminue la performance du classifieur :
 min_samples_leaf = 4 --> Error = 0.9142
@@ -195,7 +198,7 @@ RF4 = RandomForestClassifier(n_estimators = 1000, max_depth = 50)
 RF4.fit(X_train, y_train)
 yhat_RF4 = RF4.predict(X_test)
 E_RF4 = accuracy_score(y_test, yhat_RF4, normalize=True)
-print E_RF4
+print( E_RF4 )
 ''' Analyse n°3 : limiter la taille de l'arbre peut améliorer la prédiction'''
 
 # Remarque : bizarrement Knn plus performant que RF (!)
