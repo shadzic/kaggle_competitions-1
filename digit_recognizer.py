@@ -16,18 +16,16 @@ import platform
 if platform.system() == 'Windows':
     if os.path.exists(os.getcwd() +'\\train.csv'):
         path = os.getcwd() +'\\train.csv'
-
-if platform.system() == 'Linux':
-    path = os.getcwd() +'/train.csv'
-else:
-    path = 'E:\\perso\\github\\kaggle_competitions-1\\digit_recognizer\\train.csv'
+    else:
+        path = 'E:\\perso\\github\\kaggle_competitions-1\\digit_recognizer\\train.csv'
+elif platform.system() == 'Linux':
+    path = os.getcwd() + '/train.csv'
 
 data = pd.read_csv(path,delimiter=',')
-n = data.shape[0]
-p = data.shape[1]
-
-y = data['label'] # labels 
-X = data.iloc[:,1:p] # features
+n = data.shape[0]       # 42000
+p = data.shape[1]       # 785 = 1+ 28*28
+y = data['label']       # labels 
+X = data.iloc[:,1:p]    # features
 
 #%%
 #-------------------------------- 0 INTRODUCTION ---------------------------------------
@@ -35,7 +33,7 @@ import pylab as pl
 
 # 0/1 plot the 9 first digit 
 nine_first_digit = X.iloc[0:9,:]
-for i in range(nine_first_digit.shape[0]):  
+for i in range(nine_first_digit.shape[0]):
     pl.subplot(3, 3, i + 1)
     digit = nine_first_digit.iloc[i,:].values.reshape((28,28))
     pl.imshow(digit, cmap=pl.cm.summer, interpolation='none') #gray_r nearest
@@ -103,6 +101,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.lda import LDA
 from sklearn.qda import QDA
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 import sklearn as sklearn
 
 X_train, X_test, y_train, y_test = train_test_split(Xbis.values, y.values, test_size=0.66, random_state=42)
@@ -202,6 +201,13 @@ print( E_RF4 )
 ''' Analyse n°3 : limiter la taille de l'arbre peut améliorer la prédiction'''
 
 # Remarque : bizarrement Knn plus performant que RF (!)
+
+# Multi-class logistic regression (one vs all)
+regLog = LogisticRegression()
+regLog.fit(X_train, y_train)
+yhat_regLog = regLog.predict(X_test)
+E_regLog = accuracy_score(y_test, yhat_regLog, normalize=True)
+print( E_regLog )   # 0.896103896104
 
 
 #%%
